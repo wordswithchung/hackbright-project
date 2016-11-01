@@ -1,17 +1,18 @@
 import scrapy
 
-# command line: scrapy runspider scra.py -o test.json
+# command line: scrapy runspider scra.py -o airfare.json
 
 class FareSpider(scrapy.Spider):
     name = "fares"
     # make a file with all the URLs to extract data from (start_urls)
-    start_urls = ['http://www.faredetective.com/farehistory/flights-from-Zurich-ZRH-to-Toronto-YYZ.html']
+    start_urls = [line.strip() for line in open('file6.txt')]
 
     def parse(self, response):
         
-        # Title area with from and to airport codes. Sample data:
-        # '<h1 class="ttl ttl_ft">Airfare History Charts - Zurich (ZRH) 
-        # to Toronto (YYZ)</h1>'
+        """ Title area with from and to airport codes. Sample data:
+            '<h1 class="ttl ttl_ft">Airfare History Charts - Zurich (ZRH) to 
+            Toronto (YYZ)</h1>'
+        """
 
         header = response.css('h1.ttl').extract_first()
         lst = header.split()
@@ -26,7 +27,7 @@ class FareSpider(scrapy.Spider):
             if "(" in item:
                 lst_codes.append(extract_parentheses(item))
         
-        """Fare area with price and cheapest month info. Sample data: 
+        """ Fare area with price and cheapest month info. Sample data: 
             u'<div class="div7">From:Zurich<br>To:Toronto<br>Lowest price 
             found:771.5 <br>Average price: 1063<br>Cheapest months to travel: 
             November<br></div>
@@ -44,3 +45,4 @@ class FareSpider(scrapy.Spider):
             'average_price': extract_colon(fare[3]),
             'cheapest_month': extract_colon(fare[4]),
             }
+

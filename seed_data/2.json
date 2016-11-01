@@ -1,0 +1,15 @@
+[
+{"depart": "ZRH", "average_price": "196", "arrive": "LGW", "lowest_price": "62.7505", "cheapest_month": "February"},
+{"depart": "ZRH", "average_price": "562", "arrive": "DEL", "lowest_price": "562.029", "cheapest_month": "November"},
+{"depart": "ZRH", "average_price": "655", "arrive": "SIN", "lowest_price": "654.653", "cheapest_month": "July"},
+{"depart": "AUH", "average_price": "253", "arrive": "DEL", "lowest_price": "238.738", "cheapest_month": "October"},
+{"depart": "ADL", "average_price": "1459", "arrive": "LGW", "lowest_price": "1459.38", "cheapest_month": "March"},
+{"depart": "ABI", "average_price": "2809", "arrive": "SIN", "lowest_price": "2808.5", "cheapest_month": "December"},
+{"depart": "AUH", "average_price": "473", "arrive": "LHR", "lowest_price": "472.799", "cheapest_month": "November"},
+{"depart": "AAR", "average_price": "827", "arrive": "DEL", "lowest_price": "826.95", "cheapest_month": "December"},
+{"depart": "AUH", "average_price": "1164", "arrive": "ORD", "lowest_price": "908.28", "cheapest_month": "October"},
+{"depart": "ABZ", "average_price": "99", "arrive": "AMS", "lowest_price": "79.301", "cheapest_month": "July"},
+{"depart": "ABZ", "average_price": "885", "arrive": "KUL", "lowest_price": "885", "cheapest_month": "April"},
+{"depart": "AUH", "average_price": "212", "arrive": "BOM", "lowest_price": "212.255", "cheapest_month": "December"},
+{"depart": "YXX", "average_price": "543", "arrive": "MCO", "lowest_price": "543.28", "cheapest_month": "April"}
+]

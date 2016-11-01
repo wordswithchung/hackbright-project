@@ -38,13 +38,25 @@ class Airfare(db.Model):
     __tablename__ = "airfares"
 
     airfare_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    depart = db.Column(db.String(3), db.ForeignKey('airports.code'))
-    arrive = db.Column(db.String(3), db.ForeignKey('airports.code'))
-    lowest_price = 
-    average_price = 
-    cheapest_month =
+    depart = db.Column(db.String(3), db.ForeignKey("airports.code"))
+    arrive = db.Column(db.String(3), db.ForeignKey("airports.code"))
+    lowest_price = db.Column(db.Float)
+    average_price = db.Column(db.Float)
+    cheapest_month = db.Column(db.String(10))
 
+    aport = db.relationship("Airport", foreign_keys=[arrive],
+                                       backref=db.backref("airfares"))
+    dport = db.relationship("Airport", foreign_keys=[depart],
+                                       backref=db.backref("fares"))
 
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return """<depart={} arrive={} average_price={} 
+                cheapest_month={}>""".format(self.depart,
+                                             self.arrive,
+                                             self.average_price,
+                                             self.cheapest_month,)
 
 # HELPER ##########
 
