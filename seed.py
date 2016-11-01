@@ -54,7 +54,7 @@ def load_airfares():
             db.session.commit()
 
     db.session.commit()
-
+    
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -62,5 +62,6 @@ if __name__ == "__main__":
     db.create_all()
     
     # load_airports()
-    load_airfares()
+    # load_airfares()
+    load_ports()
     print "All's well that ends in the database well."

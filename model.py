@@ -2,6 +2,7 @@
 https://github.com/wordswithchung/hackbright-project."""
 
 from flask_sqlalchemy import SQLAlchemy
+import haversine
 
 db = SQLAlchemy()
 
@@ -45,9 +46,11 @@ class Airfare(db.Model):
     cheapest_month = db.Column(db.String(10))
 
     aport = db.relationship("Airport", foreign_keys=[arrive],
-                                       backref=db.backref("airfares"))
+                                       backref=db.backref("afare",
+                                       order_by=average_price))
     dport = db.relationship("Airport", foreign_keys=[depart],
-                                       backref=db.backref("fares"))
+                                       backref=db.backref("dfare",
+                                       order_by=average_price))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
