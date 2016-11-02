@@ -44,8 +44,9 @@ def search():
     """
 
     # SECTION ONE ######
-    a = Port.query.filter_by(code=depart).first()
+    user_port = Port.query.filter_by(code=depart).first()
 
+    ports_to_search = set()
     
 
 
