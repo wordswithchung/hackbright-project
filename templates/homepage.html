@@ -4,4 +4,19 @@
 
 <p>Homepage stuff</p>
 
+<form action="/search" method="POST">
+    <label>Departure: <input type="text" name="depart"></label>
+    <label>Month: </label>
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Duration</button>
+            <div id="myDropdown" class="dropdown-content">
+            One week
+            Two weeks
+            Three weeks
+            Four weeks
+              </div>
+    </div>
+    <input type="submit" name="Search">
+</form>
+
 {% endblock %}

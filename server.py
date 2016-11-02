@@ -1,11 +1,12 @@
 """Airfare search: https://github.com/wordswithchung/hackbright-project"""
 
 from datetime import datetime
-from flask import (Flask, jsonify, render_template, redirect, request, flash, 
-                   session)
+from flask import (Flask, jsonify, render_template, redirect, 
+                   request, flash, session)
 from flask_debugtoolbar import DebugToolbarExtension
+from haversine import distance
 from jinja2 import StrictUndefined
-from model import Airport, Airfare, connect_to_db, db
+from model import Airfare, Port, connect_to_db, db
 from sqlalchemy import func
 
 
@@ -22,7 +23,31 @@ def index():
     
     return render_template("homepage.html")
 
+@app.route('/search', methods=['POST'])
+def search():
+    """User searches for flight."""
 
+    # depart = request.form.get("depart")
+    # month = request.form.get("month")
+    # duration = request.form.get("duration")
+
+    # things to implement: depart should pull from airports database
+    # for autocomplete
+
+    """LOGIC V2
+
+    When we get user's depart and month:
+    - if depart exists in airfares table (Airfare), find the best $/mile
+    and ping the API for those arrival airport codes
+    - in addition, find the arrival airport codes which has the cheapest_
+    month equal to user's month. Diversify the distance from user's depart
+    and ping the API for those arrival airport codes
+    """
+
+    # SECTION ONE ######
+    a = Port.query.filter_by(code=depart).first()
+
+    
 
 
 

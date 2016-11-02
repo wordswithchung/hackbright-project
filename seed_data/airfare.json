@@ -6301,7 +6301,6 @@
 {"depart": "BSL", "average_price": "1137", "arrive": "MIA", "lowest_price": "1136.76", "cheapest_month": "April"},
 {"depart": "BSL", "average_price": "1223", "arrive": "MEX", "lowest_price": "1223.42", "cheapest_month": "December"},
 {"depart": "BSL", "average_price": "1809", "arrive": "MNL", "lowest_price": "1808.93", "cheapest_month": "December"},
-{"depart": "ZDH", "average_price": "1761", "arrive": "MIA", "lowest_price": "1760.67", "cheapest_month": "April"},
 {"depart": "BSL", "average_price": "100", "arrive": "LHR", "lowest_price": "73.9071", "cheapest_month": "February"},
 {"depart": "BSL", "average_price": "1475", "arrive": "JFK", "lowest_price": "579.54", "cheapest_month": "November"},
 {"depart": "BTR", "average_price": "219", "arrive": "DFW", "lowest_price": "162.1", "cheapest_month": "November"},
