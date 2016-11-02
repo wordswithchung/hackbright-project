@@ -8,26 +8,6 @@ db = SQLAlchemy()
 
 # MODEL DEFINITIONS ##########
 
-# class Airport(db.Model):
-#     """List of all airport codes. Data acquired from: https://iatacodes.org/
-
-#     Sample data:
-#         {"code":"ZZV","name":"Zanesville","country_code":"US"}
-#     """
-
-#     __tablename__ = "airports"
-
-#     code = db.Column(db.String(3), primary_key=True)
-#     country_code = db.Column(db.String(2), nullable=False)
-#     name = db.Column(db.String(64), nullable=False)
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-
-#         return "<Airport code={} country_code={} name={}>".format(self.code,
-#                                                            self.country_code,
-#                                                            self.name,)
-
 class Port(db.Model):
     """List of all airport codes with longitude and lattitude info to
     calculate distance. Info from https://datahub.io/dataset/global-airports
@@ -72,6 +52,15 @@ class Airfare(db.Model):
     dport = db.relationship("Port", foreign_keys=[depart],
                                        backref=db.backref("dfare",
                                        order_by=average_price))
+
+    def calculate_cost_per_mile(self):
+        """Given one airfare object, calculate the cost per mile."""
+
+        a = Port.query.filter_by(code=self.arrive).first()
+        d = Port.query.filter_by(code=self.depart).first()
+
+        return self.average_price / distance([a.lat, a.lon],
+                                             [d.lat, d.lon])
 
     def __repr__(self):
         """Provide helpful representation when printed."""

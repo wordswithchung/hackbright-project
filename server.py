@@ -4,7 +4,6 @@ from datetime import datetime
 from flask import (Flask, jsonify, render_template, redirect, 
                    request, flash, session)
 from flask_debugtoolbar import DebugToolbarExtension
-from haversine import distance
 from jinja2 import StrictUndefined
 from model import Airfare, Port, connect_to_db, db
 from sqlalchemy import func
