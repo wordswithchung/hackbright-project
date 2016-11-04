@@ -22,10 +22,13 @@ def index():
     """Homepage."""
 
     today = datetime.today()
-    months = [today]
+    months = []
+    # build a two-week buffer for displaying months available to book travel
+    if today.day < calendar.monthrange(today.year, today.month)[1] / 2:
+        months.append(today)
     # http://stackoverflow.com/a/12736311
-    
-    for i in range(11):
+
+    while len(months) < 12:
         days_in_month = calendar.monthrange(today.year, today.month)[1]
         month = today + timedelta(days=days_in_month)
         months.append(month)
@@ -37,21 +40,43 @@ def index():
 def search():
     """User searches for flight."""
 
-    depart = request.form.get("depart")
-    month = request.form.get("month")
-    duration = request.form.get("duration")
+    depart = request.form.get("depart") # string
+    month, year = request.form.get("month").split() # int representing month year
+    duration = request.form.get("duration") # int representing # of days
+    month = int(month)
+    month_name = calendar.month_name[month]
+    year = int(year)
+    duration = int(duration)
 
     user_port = Port.query.filter_by(code=depart).first()
 
+    # 14 days away from today to search
+    today = date.today()
+    two_weeks = timedelta(days=14)
+    safe_day = today + two_weeks
+    
+    # find first qualified Tuesday (search_date)
+    c = calendar.monthcalendar(year, month)
 
+    if c[0][1]:
+        if date(year, month, c[0][1]) > safe_day:
+            search_date = date(year, month, c[0][1])
+    else:
+        if date(year, month, c[1][1]) > safe_day:
+            search_date = date(year, month, c[1][1])
+        elif date(year, month, c[2][1]) > safe_day:
+            search_date = date(year, month, c[2][1])
+        elif date(year, month, c[3][1]) > safe_day:
+            search_date = date(year, month, c[3][1])
 
-    print depart
-    print month
-    print duration
+    end_date = search_date + timedelta(days=duration)
 
+    end_date = end_date.strftime("%Y-%m-%d")
+    search_date = search_date.strftime("%Y-%m-%d")
 
-
-    ports_to_search = set()
+    # determine ports to search
+    ports_to_search = Airfare.calc_cheapest_month(month_name, user_port)
+    
     
 @app.route('/autocomplete_port')
 def autocomplete_airport_search():

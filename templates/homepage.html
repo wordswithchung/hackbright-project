@@ -2,25 +2,23 @@
 
 {% block content %}
 
-<p>Homepage stuff</p>
-
 <form action="/search" method="POST">
     <div id="port_search">
     <label>From: <input type="text" name="depart"></label><br>
     </div>
     <br>
 
-    <p>Month of travel: <select name="month">
+    <p>When: <select name="month">
     {% for month in months %}
-      <option value="{{ month.month }}">{{ month.month }} {{ month.year }} </option>
+      <option value="{{ month.month }} {{ month.year }}">{{ month.month }} {{ month.year }} </option>
     {% endfor %}
     </select>
 
-    <p>Duration</p>
-    <input type="radio" name="duration" value="1" checked> One week<br>
-    <input type="radio" name="duration" value="2"> Two weeks<br>
-    <input type="radio" name="duration" value="3"> Three weeks<br>
-    <input type="radio" name="duration" value="4"> Four weeks<br>
+    <p>How long:</p>
+    <input type="radio" name="duration" value="7" checked> One week<br>
+    <input type="radio" name="duration" value="14"> Two weeks<br>
+    <input type="radio" name="duration" value="21"> Three weeks<br>
+    <input type="radio" name="duration" value="28"> Four weeks<br>
 
     <br>
     <input type="submit" name="Search">
