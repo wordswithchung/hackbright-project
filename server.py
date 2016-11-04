@@ -43,6 +43,7 @@ def search():
     depart = request.form.get("depart") # string
     month, year = request.form.get("month").split() # int representing month year
     duration = request.form.get("duration") # int representing # of days
+    
     month = int(month)
     month_name = calendar.month_name[month]
     year = int(year)
@@ -72,11 +73,21 @@ def search():
     end_date = search_date + timedelta(days=duration)
 
     end_date = end_date.strftime("%Y-%m-%d")
-    search_date = search_date.strftime("%Y-%m-%d")
+    start_date = search_date.strftime("%Y-%m-%d")
 
     # determine ports to search
-    ports_to_search = Airfare.calc_cheapest_month(month_name, user_port)
+    ports = Airfare.locations(month_name, user_port)
     
+    # make kayak links with ports
+    kayak_urls = []
+    for port in ports:
+        kayak = ("https://www.kayak.com/flights/" + port.depart + "-" + port.arrive 
+             + "/" + start_date + "/" + end_date)
+        kayak_urls.append(kayak)
+
+    return render_template("search.html", kayak_urls=kayak_urls,
+                                          ports=ports)
+
     
 @app.route('/autocomplete_port')
 def autocomplete_airport_search():

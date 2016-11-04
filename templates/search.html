@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>HI! THIS IS THE SEARCH RESULTS! WOOHOO!</h1>
+
+{# http://stackoverflow.com/a/21459009 #}
+
+{% for port in ports %}
+
+    Destination: {{ port.arrive }}<br>
+    Average price: {{ port.average_price }}<br>
+    <a href="{{ kayak_urls[loop.index0] }}">Buy on Kayak!</a><br>
+<br>
+{% endfor %}
+
+{% endblock %}
