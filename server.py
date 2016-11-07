@@ -2,11 +2,11 @@
 
 import calendar
 from datetime import date, datetime, timedelta
-from flask import (Flask, jsonify, render_template, redirect, 
+from flask import (Flask, jsonify, render_template, redirect,
                    request, flash, session)
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
-from model import Airfare, Port, connect_to_db, db
+from model import Airfare, Airport, connect_to_db, db
 from sqlalchemy import func
 
 
@@ -33,7 +33,7 @@ def index():
         month = today + timedelta(days=days_in_month)
         months.append(month)
         today = month
-    
+
     return render_template("homepage.html", months=months)
 
 @app.route('/search', methods=['POST'])
@@ -43,52 +43,41 @@ def search():
     depart = request.form.get("depart") # string
     month, year = request.form.get("month").split() # int representing month year
     duration = request.form.get("duration") # int representing # of days
-    
+
     month = int(month)
     month_name = calendar.month_name[month]
     year = int(year)
     duration = int(duration)
 
-    user_port = Port.query.filter_by(code=depart).first()
+    user_port = Airport.query.filter_by(code=depart).first()
 
-    # 14 days away from today to search
     today = date.today()
     two_weeks = timedelta(days=14)
     safe_day = today + two_weeks
-    
-    # find first qualified Tuesday (search_date)
+
     c = calendar.monthcalendar(year, month)
 
-    if c[0][1]:
-        if date(year, month, c[0][1]) > safe_day:
-            search_date = date(year, month, c[0][1])
-    else:
-        if date(year, month, c[1][1]) > safe_day:
-            search_date = date(year, month, c[1][1])
-        elif date(year, month, c[2][1]) > safe_day:
-            search_date = date(year, month, c[2][1])
-        elif date(year, month, c[3][1]) > safe_day:
-            search_date = date(year, month, c[3][1])
+    for i in range(4):
+        if c[i][1]:
+            if date(year, month, c[i][1]) > safe_day:
+                global search_date
+                search_date = date(year, month, c[i][1])
 
     end_date = search_date + timedelta(days=duration)
-
     end_date = end_date.strftime("%Y-%m-%d")
     start_date = search_date.strftime("%Y-%m-%d")
 
-    # determine ports to search
-    ports = Airfare.locations(month_name, user_port)
-    
-    # make kayak links with ports
+    ports = Airfare.locations(month_name, user_port) # determine ports to search
+
     kayak_urls = []
     for port in ports:
-        kayak = ("https://www.kayak.com/flights/" + port.depart + "-" + port.arrive 
-             + "/" + start_date + "/" + end_date)
-        kayak_urls.append(kayak)
+        kayak_urls.append("https://www.kayak.com/flights/" + port.depart + "-"
+                          + port.arrive + "/" + start_date + "/" + end_date)
 
     return render_template("search.html", kayak_urls=kayak_urls,
                                           ports=ports)
 
-    
+
 @app.route('/autocomplete_port')
 def autocomplete_airport_search():
     #https://designshack.net/articles/javascript/create-a-simple-autocomplete-with-html5-jquery/

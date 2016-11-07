@@ -18,17 +18,18 @@ def load_airfares():
 
     # Open airports.json file and parse data into airport table
     jf = open("seed_data/airfare.json")
-    f = open("seed_data/ports.csv")
+    f = open("seed_data/clean_airports.txt")
     ports = []
     for line in f:
-        ports.append(line[:3])
+        l = line.rstrip().split('|')
+        if l[4]:
+          ports.append(l[4])
     print ports
 
     dictionary = json.load(jf)
     for i, item in enumerate(dictionary):
-        print "item['depart'].encode('ascii', 'ignore') ", item['depart'].encode('ascii', 'ignore')
-        if (item['depart'].encode('ascii', 'ignore') in ports) or (item['arrive'
-            ].encode('ascii', 'ignore') in ports):
+        # print "item['depart'].encode('ascii', 'ignore') ", item['depart'].encode('ascii', 'ignore')
+        if (item['depart'].encode('ascii', 'ignore') in ports) or (item['arrive'].encode('ascii', 'ignore') in ports):
             airfare = Airfare(depart=item['depart'],
                           arrive=item['arrive'],
                           lowest_price=float(item['lowest_price'].encode('ascii', 'ignore')),
@@ -54,25 +55,24 @@ def load_airports():
     Airport.query.delete()
 
     # Open airports.json file and parse data into airport table
-    f = open("seed_data/airports.csv")
+    f = open("seed_data/clean_airports.txt")
     for line in f:
-        l = line.rstrip().split(',')
-        (airport_id, name, city, country, code, icao, lat, lng,
-            alt, timezone, dst, tz) = l
-        airport = Airport(airport_id=airport_id,
-                          name=name,
-                          city=city,
-                          country=country,
-                          code=code,
-                          icao=icao,
-                          lat=lat,
-                          lng=lng,
-                          alt=alt,
-                          timezone=timezone,
-                          dst=dst,
-                          tz=tz,)
+        l = line.rstrip().split('|')
+        if l[4]:
+            airport = Airport(airport_id=l[0],
+                              name=l[1],
+                              city=l[2],
+                              country=l[3],
+                              code=l[4],
+                              icao=l[5],
+                              lat=l[6],
+                              lng=l[7],
+                              alt=l[8],
+                              timezone=l[9],
+                              dst=l[10],
+                              tz=l[11],)
 
-        db.session.add(airport)
+        db.session.merge(airport)
 
     db.session.commit()
 
