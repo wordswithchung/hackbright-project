@@ -52,3 +52,9 @@ def calc_cost_per_mile(self):
 
     return self.average_price / distance([a.lat, a.lon],
                                          [d.lat, d.lon])
+
+# to seed the seed_data/list.txt file
+with open('seed_data/list.txt', 'w') as lst:
+    for line in h:
+        line = line.rstrip()
+        lst.write('\"' + line + '\", ')

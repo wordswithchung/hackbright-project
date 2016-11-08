@@ -6,10 +6,10 @@
 
 {# http://stackoverflow.com/a/21459009 #}
 
-{% for port in ports %}
+{% for airport in airports %}
 
-    Destination: {{ port.arrive }}<br>
-    Average price: {{ port.average_price }}<br>
+    Destination: {{ airport.arrive }}<br>
+    Average price: {{ airport.average_price }}<br>
     <a href="{{ kayak_urls[loop.index0] }}">Buy on Kayak!</a><br>
 <br>
 {% endfor %}
