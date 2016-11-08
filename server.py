@@ -40,7 +40,7 @@ def index():
 def search():
     """User searches for flight."""
 
-    depart = request.form.get("depart") # string
+    depart = request.form.get("depart")[:3] # string
     month, year = request.form.get("month").split() # int representing month year
     duration = request.form.get("duration") # int representing # of days
 
