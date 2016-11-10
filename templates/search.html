@@ -4,7 +4,7 @@
 <div class="container-fluid">
 <div class="row">
 <div class="col-xs-12">
-<h3>From {{ user_port.code }} to anywhere in {{ month_name }} {{ year }} for {{ duration }} days:</h3>
+<h3>From {{ depart }} to anywhere in {{ month_name }} {{ year }} for {{ duration }} days:</h3>
 </div></div>
 
 <div class="row">
@@ -13,6 +13,8 @@
 <div class="col-xs-12 col-md-4">
     <span><h1>{{ airfare.aport.city }}</h1></span>
     Average price: {{ "${:.0f}".format(airfare.average_price) }}<br>
+    Airport code: {{ airfare.arrive }}<br>
+    Miles from {{ depart }}: {{ distances[loop.index0] }}<br>
     <a href="{{ kayak_urls[loop.index0] }}">Buy on Kayak!</a><br>
 </div>
 

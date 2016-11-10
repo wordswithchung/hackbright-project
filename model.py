@@ -1,11 +1,7 @@
 """Models and database functions for airfare project
 https://github.com/wordswithchung/hackbright-project."""
 
-import calendar
-from datetime import date, datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
-from haversine import distance
-from random import sample
 
 db = SQLAlchemy()
 
@@ -19,7 +15,8 @@ class Airport(db.Model):
     Name    Name of airport. May or may not contain the City name.
     City    Main city served by airport. May be spelled differently from Name.
     Country Country or territory where airport is located.
-    IATA/FAA    3-letter FAA code, for airports located in Country "United States of America".
+    IATA/FAA    3-letter FAA code, for airports located in Country "United
+                States of America".
     3-letter IATA code, for all other airports. Blank if not assigned.
     ICAO    4-letter ICAO code. Blank if not assigned.
     Latitude    Decimal degrees, usually to six significant digits.
@@ -88,36 +85,6 @@ class Airfare(db.Model):
 
 
     @staticmethod
-    def calc_months():
-        """Function generates the months to display on the homepage. Calculates:
-        (1) Two weeks from today (to provide a safety buffer);
-        (2) 12 months total in while-loop.
-
-        http://stackoverflow.com/a/12736311
-        """
-
-        today = datetime.today()
-        months = []
-
-        if today.day < calendar.monthrange(today.year, today.month)[1] / 2:
-            months.append(today)
-
-        while len(months) < 12:
-            days_in_month = calendar.monthrange(today.year, today.month)[1]
-            month = today + timedelta(days=days_in_month)
-            months.append(month)
-            today = month
-
-        month_names = []
-        for month in months:
-            m, y = month.month, month.year
-            m = calendar.month_name[m]
-            month_names.append(m + " " + str(y))
-
-        return months, month_names
-
-
-    @staticmethod
     def choose_locations(month, depart):
         """Figure out which locations to recommend to user based on their
         desired month of travel.
@@ -127,60 +94,26 @@ class Airfare(db.Model):
             depart = Port instance object
         """
 
-        best_bet = Airfare.query.filter_by(depart=depart.code,
-                                           cheapest_month=month).all()
+        best_bet = (db.session.query(Airfare).filter(Airfare.depart==depart,
+                                Airfare.cheapest_month==month)
+                                .join(Airport, Airfare.arrive==Airport.code)
+                                .order_by(Airport.city).all())
 
-        return best_bet
+        if len(best_bet) > 10:
+            return best_bet
+        else:
+            best_bet = (db.session.query(Airfare).filter(Airfare.depart==depart)
+                                .join(Airport, Airfare.arrive==Airport.code)
+                                .order_by(Airport.city).all())
 
-
-    @staticmethod
-    def choose_dates(month, year, duration):
-        """Figure out the start_date and end_date for the search."""
-
-        today = date.today()
-        safe_day = today + timedelta(days=14)
-
-        c = calendar.monthcalendar(year, month)
-        search_date = safe_day
-
-        for i in range(4):
-            if c[i][1]:
-                if date(year, month, c[i][1]) > safe_day:
-                    search_date = date(year, month, c[i][1])
-                    break
-
-        end_date = search_date + timedelta(days=duration)
-        end_date = end_date.strftime("%Y-%m-%d")
-        start_date = search_date.strftime("%Y-%m-%d")
-
-        return start_date, end_date
-
-    @staticmethod
-    def make_kayak_urls(airfares, start, end):
-        """Takes airfare objects and generates Kayak URLs.
-
-        Input:
-        - airport objects
-        - start date
-        - end date
-        """
-
-        kayak_urls = []
-        for fare in airfares:
-            kayak_urls.append("https://www.kayak.com/flights/" + fare.depart +
-                "-" + fare.arrive + "/" + start + "/" + end)
-
-        return kayak_urls
 
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return ("<depart={} arrive={} average_price={} cheapest_month={}>"
-                                                .format(self.depart,
-                                                        self.arrive,
-                                                        self.average_price,
-                                                        self.cheapest_month))
+        return ("<depart={self.depart} arrive={self.arrive} "
+                "average_price={self.average_price} "
+                "cheapest_month={self.cheapest_month}>".format(self=self))
 
 
 # HELPER ##########
