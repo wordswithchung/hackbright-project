@@ -1,17 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-12">
+<h3>From {{ user_port.code }} to anywhere in {{ month_name }} {{ year }} for {{ duration }} days:</h3>
+</div></div>
 
-<h1>HI! THIS IS THE SEARCH RESULTS! WOOHOO!</h1>
+<div class="row">
+{% for airfare in airfares %}
 
-{# http://stackoverflow.com/a/21459009 #}
-
-{% for airport in airports %}
-
-    Destination: {{ airport.arrive }}<br>
-    Average price: {{ airport.average_price }}<br>
+<div class="col-xs-12 col-md-4">
+    <span><h1>{{ airfare.aport.city }}</h1></span>
+    Average price: {{ "${:.0f}".format(airfare.average_price) }}<br>
     <a href="{{ kayak_urls[loop.index0] }}">Buy on Kayak!</a><br>
-<br>
-{% endfor %}
+</div>
 
+{% endfor %}
+</div></div>
 {% endblock %}

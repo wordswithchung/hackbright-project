@@ -57,8 +57,9 @@ class Airport(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-
-        return "<Airport code={} city={}>".format(self.code, self.city)
+        # must pass in self = self so that it knows
+        # dictionary
+        return "<Airport code={self.code} city={self.city}>".format(self=self)
 
 
 class Airfare(db.Model):
@@ -107,7 +108,13 @@ class Airfare(db.Model):
             months.append(month)
             today = month
 
-        return months
+        month_names = []
+        for month in months:
+            m, y = month.month, month.year
+            m = calendar.month_name[m]
+            month_names.append(m + " " + str(y))
+
+        return months, month_names
 
 
     @staticmethod
@@ -149,8 +156,8 @@ class Airfare(db.Model):
         return start_date, end_date
 
     @staticmethod
-    def make_kayak_urls(airports, start, end):
-        """Takes airport objects and generates Kayak URLs.
+    def make_kayak_urls(airfares, start, end):
+        """Takes airfare objects and generates Kayak URLs.
 
         Input:
         - airport objects
@@ -159,9 +166,9 @@ class Airfare(db.Model):
         """
 
         kayak_urls = []
-        for port in airports:
-            kayak_urls.append("https://www.kayak.com/flights/" + port.depart +
-                "-" + port.arrive + "/" + start + "/" + end)
+        for fare in airfares:
+            kayak_urls.append("https://www.kayak.com/flights/" + fare.depart +
+                "-" + fare.arrive + "/" + start + "/" + end)
 
         return kayak_urls
 

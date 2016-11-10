@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-  <form id="form-country_v1" name="form-country_v1" action="/search" method="POST">
+<div class="container-fluid">
+  <div class="row">
+<div class="col-xs-6 col-md-4">
+  <form id="form-country_v1" name="form-country_v1" action="/search" method="POST" class="form-inline">
 
     <div class="typeahead__container">
         <div class="typeahead__field">
@@ -15,22 +17,29 @@
             </span>
 
         </div>
-    </div>
+    </div></div>
 
-    <p>When: <select name="month">
+<div class="col-xs-3 col-md-3">
+    <select display="When" name="month" class="form-control">
     {% for month in months %}
-      <option value="{{ month.month }} {{ month.year }}">{{ month.month }} {{ month.year }} </option>
+    <option value="{{ month.month }} {{ month.year }}">{{ month_names[loop.index0] }}</option>
     {% endfor %}
     </select>
+</div>
 
-    <p>How long:</p>
-    <input type="radio" name="duration" value="7" checked> One week<br>
-    <input type="radio" name="duration" value="14"> Two weeks<br>
-    <input type="radio" name="duration" value="21"> Three weeks<br>
-    <input type="radio" name="duration" value="28"> Four weeks<br>
+<div class="col-xs-2 col-md-2">
+    <select name="duration" class="form-control">
+      <option value="7">One week</option>
+      <option value="14">Two weeks</option>
+      <option value="21">Three weeks</option>
+      <option value="28">Four weeks</option>
+  </select>
+</div>
 
-    <br>
-    <input type="submit" name="Search">
+<div class="col-xs-1 col-md-1">
+    <input type="submit" class="btn btn-default">
+</div>
 </form>
-
+</div>
+</div>
 {% endblock %}

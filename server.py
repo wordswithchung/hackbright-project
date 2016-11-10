@@ -1,27 +1,34 @@
 """Airfare search: https://github.com/wordswithchung/hackbright-project"""
-
+# native python
 import calendar
 from datetime import date, datetime, timedelta
-from flask import (Flask, jsonify, render_template, redirect,
-                   request, flash, session)
-from flask_debugtoolbar import DebugToolbarExtension
-from jinja2 import StrictUndefined
+
+# third-party
+import flask
+from flask import render_template, request
+import flask_debugtoolbar
+import jinja2
+
+# my stuff
 from model import Airfare, Airport, connect_to_db, db
-from sqlalchemy import func
 
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 app.secret_key = "randomKeyGenerated1837492RandomKeyGeneratedLadidadidah00!!"
 
-app.jinja_env.undefined = StrictUndefined
+app.jinja_env.undefined = jinja2.StrictUndefined
 
 
 @app.route('/')
 def index():
     """Homepage."""
 
-    return render_template("homepage.html", months=Airfare.calc_months())
+    months, month_names = Airfare.calc_months()
+
+    return render_template("homepage.html",
+                            months=months,
+                            month_names=month_names,)
 
 
 @app.route('/search', methods=['POST'])
@@ -37,12 +44,16 @@ def search():
     month_name = calendar.month_name[month]
     user_port = Airport.query.filter_by(code=depart).first()
 
-    airports = Airfare.choose_locations(month_name, user_port)
+    airfares = Airfare.choose_locations(month_name, user_port)
     start, end = Airfare.choose_dates(month, year, duration)
 
     return render_template("search.html",
-                    kayak_urls=Airfare.make_kayak_urls(airports, start, end),
-                    airports=airports,)
+                    kayak_urls=Airfare.make_kayak_urls(airfares, start, end),
+                    airfares=airfares,
+                    user_port=user_port,
+                    month_name=month_name,
+                    year=year,
+                    duration=duration,)
 
 
 if __name__ == "__main__":
@@ -52,6 +63,6 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # Use the DebugToolbar
-    DebugToolbarExtension(app)
+    flask_debugtoolbar.DebugToolbarExtension(app)
 
     app.run(host='0.0.0.0', port=5000)

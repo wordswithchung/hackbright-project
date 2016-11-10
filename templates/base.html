@@ -14,19 +14,23 @@
     {% endwith %}
 
     <link rel="stylesheet" href="/static/typeahead/dist/jquery.typeahead.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
-  <h2>Destination: Anywhere</h2>
+<div class="container-fluid">
+<h2>Destination: Anywhere</h2>
   <p>An airfare search for the flexible adventurer</p>
-  <hr>
 
+  <hr>
+</div>
   {% block content %} CONTENT GOES HERE {% endblock %}
 
   <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/static/main.js"></script>
-   <script src="/static/typeahead/src/jquery.typeahead.js"></script>
-   <script src="/static/typeahead.js"></script>
+  <script src="/static/typeahead/src/jquery.typeahead.js"></script>
+  <script src="/static/typeahead.js"></script>
 
 </body>
 </html>
