@@ -3,7 +3,7 @@
 import calendar
 from datetime import date, datetime, timedelta
 
-from flask import Flask, render_template, request, session
+from flask import Flask, jsonify, render_template, request, session
 import flask_debugtoolbar
 import jinja2
 
@@ -24,6 +24,9 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 def index():
     """Homepage."""
 
+    # if session["depart"]:
+    # Use Typeahead and set a default value for the aiport search box
+
     months, month_names = helper.calc_months()
 
     return render_template("homepage.html",
@@ -31,38 +34,42 @@ def index():
                             month_names=month_names,)
 
 
-@app.route('/search', methods=['POST'])
-def search():
-    """User searches for flight."""
+@app.route('/search.json', methods=['POST'])
+def search_json():
+    """Take search terms and generate search results."""
 
-    depart = request.form.get("depart")[:3] # string
-    month, year = request.form.get("month").split() # int representing month year
-    duration = request.form.get("duration") # int representing # of days
+    depart = request.form.get('depart')[:3]
+    month, year = request.form.get('month').split()
+    duration = request.form.get('duration')
+
+    duration, month, year = int(duration), int(month), int(year)
+    start, end = helper.choose_dates(month, year, duration)
 
     session["depart"] = depart
 
-    duration, month, year = int(duration), int(month), int(year)
-
-    month_name = calendar.month_name[month]
-
-    airfares = Airfare.choose_locations(month_name, depart)
+    airfares = Airfare.choose_locations(month, depart)
     distances = db_func.calc_distance(airfares)
-    start, end = helper.choose_dates(month, year, duration)
+    kayak_urls = kayak.make_kayak_urls(airfares, start, end)
+    datas = zip(airfares, distances, kayak_urls)
 
-    return render_template("search.html",
-                    kayak_urls=kayak.make_kayak_urls(airfares, start, end),
-                    airfares=airfares,
-                    month_name=month_name,
-                    year=year,
-                    duration=duration,
-                    depart=depart,
-                    distances=distances,)
+    data = {}
+    data['results'] = []
+    for airfare, distance, kayak_url in datas:
+        data['results'].append({
+            'arrival_city'  : airfare.aport.city,
+            'avg_price'     : int(airfare.average_price),
+            'arrival_code'  : airfare.arrive,
+            'distance'      : distance,
+            'kayak_url'     : kayak_url
+        })
 
-@app.route('/sort-by-distance')
-def sort_by_distance():
-    """Sort results via AJAX from closest to furthest from depart code."""
+    print data
 
-    pass
+    return jsonify(data)
+
+
+
+
 
 
 if __name__ == "__main__":

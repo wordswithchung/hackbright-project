@@ -2,6 +2,7 @@
 https://github.com/wordswithchung/hackbright-project."""
 
 from flask_sqlalchemy import SQLAlchemy
+import calendar
 
 db = SQLAlchemy()
 
@@ -94,6 +95,8 @@ class Airfare(db.Model):
             depart = Port instance object
         """
 
+        month = calendar.month_name[month] # convert to longform month name
+
         best_bet = (db.session.query(Airfare).filter(Airfare.depart==depart,
                                 Airfare.cheapest_month==month)
                                 .join(Airport, Airfare.arrive==Airport.code)
@@ -105,7 +108,6 @@ class Airfare(db.Model):
             best_bet = (db.session.query(Airfare).filter(Airfare.depart==depart)
                                 .join(Airport, Airfare.arrive==Airport.code)
                                 .order_by(Airport.city).all())
-
 
 
     def __repr__(self):

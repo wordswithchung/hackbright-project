@@ -4,20 +4,27 @@
 <div class="container-fluid">
 <div class="row">
 <div class="col-xs-12">
-<h3>From {{ depart }} to anywhere in {{ month_name }} {{ year }} for {{ duration }} days:</h3>
-</div></div>
 
+<h3>From {{ depart }} to anywhere for {{ duration }} days:</h3>
+
+<button id="sort-by-distance" type="button" class="btn btn-success">Sort by Distance</button>
+<button id="sort-by-airport-code" type="button" class="btn btn-success">Sort by Airport Code</button>
+<button id="sort-by-avg-price" type="button" class="btn btn-success">Sort by Average Price</button>
+<button id="sort-by-value" type="button" class="btn btn-success">Sort by $ per mile</button>
+
+</div></div></div>
+<div class="container-fluid" id="display-search-results">
 <div class="row">
-{% for airfare in airfares %}
+{% for distance, airfare in distances %}
 
-<div class="col-xs-12 col-md-4">
-    <span><h1>{{ airfare.aport.city }}</h1></span>
-    Average price: {{ "${:.0f}".format(airfare.average_price) }}<br>
-    Airport code: {{ airfare.arrive }}<br>
-    Miles from {{ depart }}: {{ distances[loop.index0] }}<br>
+<div class="col-xs-12 col-md-4" id="one-trip-info">
+    <span class="oti-city"><h1>{{ airfare.aport.city }}</h1></span>
+    Average price: <span class="oti-price">{{ "${:.0f}".format(airfare.average_price) }}</span><br>
+    Airport code: <span class="oti-code">{{ airfare.arrive }}</span><br>
+    Miles from {{ depart }}: <span class="oti-miles">{{ distance }}</span><br>
     <a href="{{ kayak_urls[loop.index0] }}">Buy on Kayak!</a><br>
 </div>
 
 {% endfor %}
-</div></div>
+</div></div></div>
 {% endblock %}
