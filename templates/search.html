@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="container-fluid">
 <div class="row">
 <div class="col-xs-12">
-
-<h3>From {{ depart }} to anywhere for {{ duration }} days:</h3>
 
 <button id="sort-by-distance" type="button" class="btn btn-success">Sort by Distance</button>
 <button id="sort-by-airport-code" type="button" class="btn btn-success">Sort by Airport Code</button>
@@ -13,18 +12,13 @@
 <button id="sort-by-value" type="button" class="btn btn-success">Sort by $ per mile</button>
 
 </div></div></div>
-<div class="container-fluid" id="display-search-results">
-<div class="row">
-{% for distance, airfare in distances %}
+<div class="container-fluid">
+<div class="row" id="display-search-results">
 
-<div class="col-xs-12 col-md-4" id="one-trip-info">
-    <span class="oti-city"><h1>{{ airfare.aport.city }}</h1></span>
-    Average price: <span class="oti-price">{{ "${:.0f}".format(airfare.average_price) }}</span><br>
-    Airport code: <span class="oti-code">{{ airfare.arrive }}</span><br>
-    Miles from {{ depart }}: <span class="oti-miles">{{ distance }}</span><br>
-    <a href="{{ kayak_urls[loop.index0] }}">Buy on Kayak!</a><br>
-</div>
+</div></div>
 
-{% endfor %}
-</div></div></div>
+{% endblock %}
+
+{% block javascript %}
+<script src="/static/search.js"></script>
 {% endblock %}

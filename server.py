@@ -34,6 +34,13 @@ def index():
                             month_names=month_names,)
 
 
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    """Render search results."""
+
+    return render_template('search.html')
+
+
 @app.route('/search.json', methods=['POST'])
 def search_json():
     """Take search terms and generate search results."""
@@ -63,13 +70,7 @@ def search_json():
             'kayak_url'     : kayak_url
         })
 
-    print data
-
     return jsonify(data)
-
-
-
-
 
 
 if __name__ == "__main__":

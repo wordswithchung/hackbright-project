@@ -2,9 +2,12 @@
 
 {% block content %}
 <div class="container-fluid">
-  <div class="row">
+
+
+<div class="row">
 <div class="col-xs-6 col-md-4">
-  <form id="form-country_v1" name="form-country_v1" action="/search.json" method="POST" class="form-inline">
+
+  <form id="form-country_v1" name="form-country_v1" action="/search" method="POST" class="form-inline">
 
     <div class="typeahead__container">
         <div class="typeahead__field">
@@ -42,6 +45,7 @@
     <input type="submit" id="form-submission" class="btn btn-default">
 </div>
 </form>
+
 </div>
 </div>
 {% endblock %}
