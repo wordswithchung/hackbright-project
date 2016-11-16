@@ -34,16 +34,9 @@ def index():
                             month_names=month_names,)
 
 
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['POST'])
 def search():
     """Render search results."""
-
-    return render_template('search.html')
-
-
-@app.route('/search.json', methods=['POST'])
-def search_json():
-    """Take search terms and generate search results."""
 
     depart = request.form.get('depart')[:3]
     month, year = request.form.get('month').split()
@@ -57,12 +50,49 @@ def search_json():
     airfares = Airfare.choose_locations(month, depart)
     distances = db_func.calc_distance(airfares)
     kayak_urls = kayak.make_kayak_urls(airfares, start, end)
+    data = zip(airfares, distances, kayak_urls)
+
+    info = []
+    for airfare, distance, kayak_url in data:
+        info.append({
+            'arrival_city'  : airfare.aport.city,
+            'avg_price'     : int(airfare.average_price),
+            'airport_code'  : airfare.arrive,
+            'distance'      : distance,
+            'kayak_url'     : kayak_url
+        })
+
+    return render_template('search.html', info=info,
+                                          length=len(kayak_urls),)
+
+
+@app.route('/search.json', methods=['POST'])
+def search_json():
+    """Take search terms and generate search results."""
+
+    # print request.args
+
+    # depart = request.args.get('depart')[:3]
+    # month, year = request.args.get('month').split()
+    # duration = request.args.get('duration')
+
+    depart, month, year, duration = data
+    print depart, month, year, duration
+
+    duration, month, year = int(duration), int(month), int(year)
+    start, end = helper.choose_dates(month, year, duration)
+
+    session["depart"] = depart
+
+    airfares = Airfare.choose_locations(month, depart)
+    distances = db_func.calc_distance(airfares)
+    kayak_urls = kayak.make_kayak_urls(airfares, start, end)
     datas = zip(airfares, distances, kayak_urls)
 
-    data = {}
-    data['results'] = []
+    info = {}
+    info['results'] = []
     for airfare, distance, kayak_url in datas:
-        data['results'].append({
+        info['results'].append({
             'arrival_city'  : airfare.aport.city,
             'avg_price'     : int(airfare.average_price),
             'arrival_code'  : airfare.arrive,
@@ -70,8 +100,38 @@ def search_json():
             'kayak_url'     : kayak_url
         })
 
-    return jsonify(data)
+    print info
 
+    return jsonify(info)
+
+"""
+BEAR EXAMPLES
+@app.route('/bears')
+def map():
+
+
+    return render_template("map.html")
+
+
+@app.route('/bears.json')
+def bear_info():
+
+
+    bears = {
+        bear.marker_id: {
+            "bearId": bear.bear_id,
+            "gender": bear.gender,
+            "birthYear": bear.birth_year,
+            "capYear": bear.cap_year,
+            "capLat": bear.cap_lat,
+            "capLong": bear.cap_long,
+            "collared": bear.collared.lower()
+        }
+        for bear in Bear.query.limit(50)}
+
+    return jsonify(bears)
+
+"""
 
 if __name__ == "__main__":
     # Debug to true while building and testing app

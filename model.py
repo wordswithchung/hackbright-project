@@ -108,6 +108,7 @@ class Airfare(db.Model):
             best_bet = (db.session.query(Airfare).filter(Airfare.depart==depart)
                                 .join(Airport, Airfare.arrive==Airport.code)
                                 .order_by(Airport.city).all())
+            return best_bet
 
 
     def __repr__(self):

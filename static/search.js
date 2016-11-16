@@ -5,6 +5,12 @@
 $(document).ready(function() {
     console.log( "ready!" );
 
+<script>
+    var depart = '{{ depart }}';
+    var month = {{ month }};
+    var year = {{ year }};
+    var duration = {{ duration }};
+
 var resultsAsHTML;
 
 function showResults(results) {
@@ -28,17 +34,13 @@ function showResults(results) {
     $('#display-search-results').load(resultsAsHTML);
 };
 
-function getData() {
+var data = {'depart': depart,
+            'month': month,
+            'year': year,
+            'duration': duration};
 
-    var formData = {
-        'depart'    : $('#input-from').val(),
-        'month'     : $('#input-month').val(),
-        'duration'  : $('#input-duration').val()
-    };
+$.post('/search.json', data, showResults);
 
-    $.post('/search.json', formData, showResults);
-};
-
-getData();
+</script>
 
 });
