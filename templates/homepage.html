@@ -49,3 +49,17 @@
 </div>
 </div>
 {% endblock %}
+
+{% block javascript %}
+
+{% if session['depart'] %}
+<script>
+
+  var depart = "{{ session['depart'] }}";
+  $('.typeahead').typeahead('val', depart);
+  console.log(depart);
+
+</script>
+{% endif %}
+
+{% endblock %}

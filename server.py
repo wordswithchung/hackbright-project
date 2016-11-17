@@ -24,14 +24,11 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 def index():
     """Homepage."""
 
-    # if session["depart"]:
-    # Use Typeahead and set a default value for the aiport search box
-
     months, month_names = helper.calc_months()
 
     return render_template("homepage.html",
-                            months=months,
-                            month_names=month_names,)
+                               months=months,
+                               month_names=month_names,)
 
 
 @app.route('/search', methods=['POST'])
@@ -45,7 +42,7 @@ def search():
     duration, month, year = int(duration), int(month), int(year)
     start, end = helper.choose_dates(month, year, duration)
 
-    session["depart"] = depart
+    session["depart"] = request.form.get('depart')
 
     airfares = Airfare.choose_locations(month, depart)
     distances = db_func.calc_distance(airfares)
@@ -63,46 +60,12 @@ def search():
         })
 
     return render_template('search.html', info=info,
-                                          length=len(kayak_urls),)
+                                          length=len(kayak_urls),
+                                          depart=depart,
+                                          year=year,
+                                          month=calendar.month_name[month],
+                                          duration=duration,)
 
-
-@app.route('/search.json', methods=['POST'])
-def search_json():
-    """Take search terms and generate search results."""
-
-    # print request.args
-
-    # depart = request.args.get('depart')[:3]
-    # month, year = request.args.get('month').split()
-    # duration = request.args.get('duration')
-
-    depart, month, year, duration = data
-    print depart, month, year, duration
-
-    duration, month, year = int(duration), int(month), int(year)
-    start, end = helper.choose_dates(month, year, duration)
-
-    session["depart"] = depart
-
-    airfares = Airfare.choose_locations(month, depart)
-    distances = db_func.calc_distance(airfares)
-    kayak_urls = kayak.make_kayak_urls(airfares, start, end)
-    datas = zip(airfares, distances, kayak_urls)
-
-    info = {}
-    info['results'] = []
-    for airfare, distance, kayak_url in datas:
-        info['results'].append({
-            'arrival_city'  : airfare.aport.city,
-            'avg_price'     : int(airfare.average_price),
-            'arrival_code'  : airfare.arrive,
-            'distance'      : distance,
-            'kayak_url'     : kayak_url
-        })
-
-    print info
-
-    return jsonify(info)
 
 """
 BEAR EXAMPLES
