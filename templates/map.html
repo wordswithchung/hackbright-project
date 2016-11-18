@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div id="map"></div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUPJFt0VRwL6XWJFm9_WnjDgNBb_d_MQg&callback=initMap"></script>
+
+
+
+<script>
+
+ function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+
+
+</script>
+
+
+{% endblock %}

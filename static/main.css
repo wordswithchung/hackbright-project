@@ -1,4 +1,4 @@
-body {
-    background-image: url("gplaypattern_@2X.png");
-    background-color: lightyellow;
+#map {
+        width: 100%;
+        height: 500px;
 }

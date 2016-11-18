@@ -67,6 +67,24 @@ def search():
                                           duration=duration,)
 
 
+@app.route('/map')
+def map():
+    """Render a Google Map that displays the airfare database info."""
+
+    airfares = {}
+    for airfare in Airfare.query.filter(Airfare.depart=="MEX").all():
+        print airfare
+        # airfares[airfare.depart] = []
+        # airfares[airfare.depart].append({"arrival_city": airfare.arrive,
+        #  "arrival_lat": airfare.aport.lat,
+        #  "arrival_lng": airfare.aport.lng,
+        #  "avg_price": airfare.average_price,
+        #  "cheapest_month": airfare.cheapest_month,})
+
+    # print airfares
+
+    return render_template('map.html', airfares=airfares,)
+
 """
 BEAR EXAMPLES
 @app.route('/bears')
@@ -99,6 +117,7 @@ def bear_info():
 if __name__ == "__main__":
     # Debug to true while building and testing app
     app.debug = True
+    app.jinja_env.auto_reload = app.debug
 
     connect_to_db(app)
 
