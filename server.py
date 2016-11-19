@@ -72,47 +72,25 @@ def map():
     """Render a Google Map that displays the airfare database info."""
 
     airfares = {}
-    for airfare in Airfare.query.filter(Airfare.depart=="MEX").all():
-        print airfare
-        # airfares[airfare.depart] = []
-        # airfares[airfare.depart].append({"arrival_city": airfare.arrive,
-        #  "arrival_lat": airfare.aport.lat,
-        #  "arrival_lng": airfare.aport.lng,
-        #  "avg_price": airfare.average_price,
-        #  "cheapest_month": airfare.cheapest_month,})
+    for airfare in Airfare.query.filter(Airfare.depart=="SFO").all():
+        a = "".join(airfare.depart + " " + str(airfare.dport.lat) + " "
+                    + str(airfare.dport.lng))
+        if a in airfares:
+            airfares[a].append({
+                             "arrival_city": airfare.arrive,
+                             "city_name": airfare.aport.city,
+                             "arrival_lat": airfare.aport.lat,
+                             "arrival_lng": airfare.aport.lng,
+                             "avg_price": airfare.average_price,
+                             "cheapest_month": airfare.cheapest_month,})
+        else:
+            airfares[a] = []
 
-    # print airfares
+    print airfares
 
     return render_template('map.html', airfares=airfares,)
 
-"""
-BEAR EXAMPLES
-@app.route('/bears')
-def map():
 
-
-    return render_template("map.html")
-
-
-@app.route('/bears.json')
-def bear_info():
-
-
-    bears = {
-        bear.marker_id: {
-            "bearId": bear.bear_id,
-            "gender": bear.gender,
-            "birthYear": bear.birth_year,
-            "capYear": bear.cap_year,
-            "capLat": bear.cap_lat,
-            "capLong": bear.cap_long,
-            "collared": bear.collared.lower()
-        }
-        for bear in Bear.query.limit(50)}
-
-    return jsonify(bears)
-
-"""
 
 if __name__ == "__main__":
     # Debug to true while building and testing app

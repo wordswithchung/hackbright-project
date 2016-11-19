@@ -3,7 +3,7 @@
 
 {% block content %}
 
-
+<button id="view-data-for-airport" type="button" class="btn btn-success">View Data for Airport</button><br>
 <div id="map"></div>
 
 {% endblock %}
@@ -12,22 +12,56 @@
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUPJFt0VRwL6XWJFm9_WnjDgNBb_d_MQg&callback=initMap"></script>
 
-
-
 <script>
 
- function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
-      }
+var airfares = {{ airfares|tojson|safe }};
+console.log(airfares);
 
+ function initMap() {
+
+// marker on Vietnam
+  var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
+// not declaring var before map so it's globally available
+    map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 3,
+    center: originalMapCenter
+  });
+
+  // var infowindow = new google.maps.InfoWindow({
+  //   content: 'Change the zoom level',
+  //   position: originalMapCenter
+  // });
+  // infowindow.open(map);
+
+  // map.addListener('zoom_changed', function() {
+  //   infowindow.setContent('Zoom: ' + map.getZoom());
+  // });
+
+};
+
+
+function loadDestinations(evt) {
+
+    var m = airfares["SFO 37.618972 -122.374889"]
+    console.log(m);
+
+    for (i = 0; i < m.length; i++) {
+
+        console.log(m[i]);
+
+        var name = m[i].city_name;
+        var spot = new google.maps.LatLng(m[i].arrival_lat, m[i].arrival_lng);
+
+        var marker = new google.maps.Marker({
+            position: spot,
+            map: map,
+            title: name,
+        });
+    console.log(marker);
+    };
+};
+
+$('#view-data-for-airport').on('click', loadDestinations);
 
 </script>
 
