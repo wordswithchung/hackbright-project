@@ -71,10 +71,11 @@ def search():
 def map():
     """Render a Google Map that displays the airfare database info."""
 
+    # this can probably go in db_func when I refactor the code
     airfares = {}
-    for airfare in Airfare.query.filter(Airfare.depart=="SFO").all():
-        a = "".join(airfare.depart + " " + str(airfare.dport.lat) + " "
-                    + str(airfare.dport.lng))
+    airport_latlngs = {}
+    for airfare in Airfare.query.all():
+        a = airfare.depart
         if a in airfares:
             airfares[a].append({
                              "arrival_city": airfare.arrive,
@@ -85,10 +86,10 @@ def map():
                              "cheapest_month": airfare.cheapest_month,})
         else:
             airfares[a] = []
+            airport_latlngs[a] = (airfare.dport.lat, airfare.dport.lng)
 
-    print airfares
-
-    return render_template('map.html', airfares=airfares,)
+    return render_template('map.html', airfares=airfares,
+                                       airport_latlngs=airport_latlngs,)
 
 
 

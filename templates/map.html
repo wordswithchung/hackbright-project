@@ -3,9 +3,28 @@
 
 {% block content %}
 
-<button id="view-data-for-airport" type="button" class="btn btn-success">View Data for Airport</button><br>
-<div id="map"></div>
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-6 col-md-4">
+  <form id="airport-search-form" method="GET" class="form-inline">
+    <div class="typeahead__container">
+        <div class="typeahead__field">
+            <span class="typeahead__query">
+                <input class="js-typeahead"
+                       id="airport-search-field"
+                       type="search"
+                       autocomplete="off"
+                       placeholder="From">
+            </span>  </div></div></div>
 
+<div class="col-xs-1">
+    <input type="submit" id="airport-search" class="btn btn-default">
+    </div>
+</div>
+
+    <div id="map"></div>
+
+</div>
 {% endblock %}
 
 {% block javascript %}
@@ -15,53 +34,235 @@
 <script>
 
 var airfares = {{ airfares|tojson|safe }};
-console.log(airfares);
+var airport_latlngs = {{ airport_latlngs|tojson|safe }};
 
- function initMap() {
+function initMap() {
+// styling from https://snazzymaps.com/style/25/blue-water
+styledMapType = new google.maps.StyledMapType(
+            [
+  {
+    "featureType": "administrative",
+    "elementType": "geometry",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#444444"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.land_parcel",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.neighborhood",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape",
+    "stylers": [
+      {
+        "color": "#f2f2f2"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "stylers": [
+      {
+        "saturation": -100
+      },
+      {
+        "lightness": 45
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "labels.icon",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "stylers": [
+      {
+        "visibility": "simplified"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
+    "elementType": "labels",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "stylers": [
+      {
+        "color": "#46bcec"
+      },
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "labels.text",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
+  }
+],
+            {name: 'Styled Map'});
 
-// marker on Vietnam
-  var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
-// not declaring var before map so it's globally available
+var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
+
+map = new google.maps.Map(document.getElementById('map'), {
+          center: originalMapCenter,
+          zoom: 3,
+          mapTypeControlOptions: {
+            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                    'styled_map']
+          }
+        });
+
+        //Associate the styled map with the MapTypeId and set it to display.
+        map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
+      };
+
+function newCenter() {
+
+    var mapCenter = new google.maps.LatLng(airport_latlngs[airport][0], airport_latlngs[airport][1]);
     map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 3,
-    center: originalMapCenter
-  });
+          center: mapCenter,
+          zoom: 3,
+          mapTypeControlOptions: {
+            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+                    'styled_map']}
+        });
 
-  // var infowindow = new google.maps.InfoWindow({
-  //   content: 'Change the zoom level',
-  //   position: originalMapCenter
-  // });
-  // infowindow.open(map);
 
-  // map.addListener('zoom_changed', function() {
-  //   infowindow.setContent('Zoom: ' + map.getZoom());
-  // });
-
+        map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
 };
 
-
 function loadDestinations(evt) {
+    evt.preventDefault();
 
-    var m = airfares["SFO 37.618972 -122.374889"]
-    console.log(m);
+    // not declaring var before so airport is globally available
+    airport = $('#airport-search-field').val().slice(0, 3);
+    var m = airfares[airport];
+
+    // var image = '/static/airport.svg';
+    newCenter();
 
     for (i = 0; i < m.length; i++) {
 
-        console.log(m[i]);
-
         var name = m[i].city_name;
+        var avgPrice = m[i].avg_price;
+        var between = ": Average Price $";
+        var cheapMonth = m[i].cheapest_month;
         var spot = new google.maps.LatLng(m[i].arrival_lat, m[i].arrival_lng);
 
         var marker = new google.maps.Marker({
             position: spot,
             map: map,
-            title: name,
+            title: name.concat(between,avgPrice),
+            // icon: image,
+            // map_icon_label: '<span class="map-icon map-icon-point-of-interest"></span>'
         });
-    console.log(marker);
+
     };
 };
 
-$('#view-data-for-airport').on('click', loadDestinations);
+$('#airport-search-form').on('submit', loadDestinations);
 
 </script>
 

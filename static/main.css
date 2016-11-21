@@ -6,3 +6,11 @@
 body {
     background-image: url("gplaypattern_@2X.png");
 }
+
+.map-icon-label .map-icon {
+    font-size: 24px;
+    color: #FFFFFF;
+    line-height: 48px;
+    text-align: center;
+    white-space: nowrap;
+}
