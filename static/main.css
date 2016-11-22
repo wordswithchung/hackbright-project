@@ -1,9 +1,57 @@
 #map {
-        width: 100%;
-        height: 600px;
+    width: 700px;
+    height: 500px;
+    margin: auto;
+    border: 1px solid gray;
 }
 
+.center {
+    margin: auto;
+    text-align: center;
+}
+
+html,
 body {
-    background-image: url("photo_airplane.jpeg");
+    height: 100%;
+}
+
+.homepage {
+    background-image: url("airplane.jpeg");
     background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+.map-page,
+.search-page {
+    background-image: url("squairy_light.png");
+}
+
+#top-banner-in-base {
+    background-color: #fff;
+}
+
+.airfare-search-tagline {
+    color: white;
+    text-align: center;
+}
+
+a a:active a:hover a:link {
+    font-family: 'Open Sans', sans-serif;
+    text-decoration: none;
+    color: gray;
+}
+
+h3 {
+    font-family: 'Quando', serif;
+}
+
+p,
+h1 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.search-result-box {
+    text-align: center;
+    line-height: 100%;
 }

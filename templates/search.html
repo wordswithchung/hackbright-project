@@ -2,32 +2,37 @@
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid search-page">
 <div class="row">
 <div class="col-xs-12">
 
 <h3>Results for travel from {{ depart }} in {{ month }} {{ year }} for {{ duration }} days:</h3>
 <br>
-<button id="sort-by-distance" type="button" class="btn btn-success">Sort by Distance</button>
-<button id="sort-by-airport-code" type="button" class="btn btn-success">Sort by Airport Code</button>
-<button id="sort-by-avg-price" type="button" class="btn btn-success">Sort by Average Price</button>
-<button id="sort-by-value" type="button" class="btn btn-success">Sort by $ per mile</button>
-<button id="sort-by-city-name" type="button" class="btn btn-success">Sort by City Name</button>
+    <p align="right">Sort by:
+    <button id="sort-by-airport-code" type="button" class="btn btn-default btn-sm">Airport Code</button>
+    <button id="sort-by-avg-price" type="button" class="btn btn-default btn-sm">Average Price</button>
+    <button id="sort-by-city-name" type="button" class="btn btn-default btn-sm">City Name</button>
+    <button id="sort-by-distance" type="button" class="btn btn-default btn-sm">Distance</button>
+    <button id="sort-by-value" type="button" class="btn btn-default btn-sm">$ per mile</button></p>
 
-</div></div></div>
-<div class="container-fluid">
-<div class="row" id="display-search-results">
+</div>
+</div>
+</div>
+  <div class="container-fluid search-page">
+  <div class="row" id="display-search-results">
 {% for i in range(1, length) %}
 
 <div class="search-result-box col-xs-12 col-md-3">
-<h1><span id="box_arrival_city{{ i }}"><span></h1>
-<p>Average price: $<span id="box_average_price{{ i }}"><span></p>
-<p>Airport code: <span id="box_airport_code{{ i }}"><span> </p>
-<p>Distance: <span id="box_distance{{ i }}"><span></p>
-<span id="box_kayak_url{{ i }}"><span>
+    <h1><span id="box_arrival_city{{ i }}"><span></h1>
+    <p>Average price: $<span id="box_average_price{{ i }}"><span>
+    <p>Airport code: <span id="box_airport_code{{ i }}"><span>
+    <p>Distance: <span id="box_distance{{ i }}"><span>
+    <p><span id="box_kayak_url{{ i }}"><span></p>
 </div>
+
 {% endfor %}
-</div></div>
+</div>
+</div>
 
 {% endblock %}
 

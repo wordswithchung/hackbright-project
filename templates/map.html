@@ -3,10 +3,16 @@
 
 {% block content %}
 
-<div class="container-fluid">
+<div class="container-fluid map-page">
+<div class="row center">
+    <br>
+    <h3>See all the places you can go.</h3>
+    <p>Select a starting airport below to view locations and average prices on a map.</p>
+</div>
 <div class="row">
-<div class="col-xs-6 col-md-4">
+    <div class="col-xs-offset-3">
   <form id="airport-search-form" method="GET" class="form-inline">
+    <div class="col-xs-5">
     <div class="typeahead__container">
         <div class="typeahead__field">
             <span class="typeahead__query">
@@ -14,13 +20,13 @@
                        id="airport-search-field"
                        type="search"
                        autocomplete="off"
-                       placeholder="From">
-            </span>  </div></div></div>
+                       placeholder="Select Starting Airport"
+                       ></span></div></div></div>
 
-<div class="col-xs-1">
+    <div class="col-xs-1">
     <input type="submit" id="airport-search" class="btn btn-default">
-    </div>
 </div>
+</div></div>
 <br>
 <div id="map"></div>
 
@@ -45,10 +51,10 @@ function initMap() {
 };
 
 function newCenter() {
-    var mapCenter = new google.maps.LatLng(airport_latlngs[airport][0], airport_latlngs[airport][1]);
+    var mapCenter = new google.maps.LatLng(31.7917, 7.0926);
     newMap = new google.maps.Map(document.getElementById('map'), {
         center: mapCenter,
-        zoom: 4,
+        zoom: 2,
         });
 };
 

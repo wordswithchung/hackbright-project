@@ -1,28 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container-fluid">
-
-
-<div class="row"><div align="center">
-<div class="col-xs-6 col-md-4">
-
+<div class="container-fluid homepage">
+<div class="row">
+  <br>
+  <br>
+  <br>
+  <h3 class="airfare-search-tagline">An airfare search for the flexible adventurer.</h3>
+  <br>
+  <br>
+</div>
+<div class="row">
+  <div class="col-md-offset-2">
+  <div class="col-xs-6 col-md-4">
   <form id="search-form" action="/search" method="POST" class="form-inline">
-
-    <div class="typeahead__container">
-        <div class="typeahead__field">
-
-            <span class="typeahead__query">
-                <input class="js-typeahead"
-                       id="input-from"
-                       name="depart"
-                       type="search"
-                       autocomplete="off"
-                       placeholder="From">
-            </span>
-
-        </div>
+    <div class="typeahead__container"><div class="typeahead__field">
+    <span class="typeahead__query">
+    <input class="js-typeahead"
+           id="input-from"
+           name="depart"
+           type="search"
+           autocomplete="off"
+           placeholder="From"></span>
     </div></div>
+  </div>
 
 <div class="col-xs-3 col-md-3">
     <select display="When" name="month" class="form-control" id="input-month">
@@ -48,18 +49,4 @@
 </div>
 </div>
 </div>
-{% endblock %}
-
-{% block javascript %}
-
-{% if session['depart'] %}
-<script>
-
-  var depart = "{{ session['depart'] }}";
-  $('#input-from').typeahead('val', depart);
-  console.log(depart);
-
-</script>
-{% endif %}
-
 {% endblock %}
