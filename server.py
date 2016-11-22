@@ -58,10 +58,9 @@ def search():
 def map():
     """Render a Google Map that displays the airfare database info."""
 
-    airfares, airport_latlngs = Airfare.create_map_airfare_objs()
+    airfares = Airfare.create_map_airfare_objs()
 
-    return render_template('map.html', airfares=airfares,
-                                       airport_latlngs=airport_latlngs,)
+    return render_template('map.html', airfares=airfares)
 
 
 if __name__ == "__main__":

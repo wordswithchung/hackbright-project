@@ -117,7 +117,7 @@ class Airfare(db.Model):
         to render from the /map route."""
 
         airfares = {}
-        airport_latlngs = {}
+
         for airfare in Airfare.query.all():
             a = airfare.depart
             if a in airfares:
@@ -130,9 +130,8 @@ class Airfare(db.Model):
                                  "cheapest_month": airfare.cheapest_month,})
             else:
                 airfares[a] = []
-                airport_latlngs[a] = (airfare.dport.lat, airfare.dport.lng)
 
-        return airfares, airport_latlngs
+        return airfares
 
     def __repr__(self):
         """Provide helpful representation when printed."""

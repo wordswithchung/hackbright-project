@@ -1,11 +1,11 @@
 #map {
-    width: 700px;
-    height: 500px;
+    width: 800px;
+    height: 600px;
     margin: auto;
     border: 1px solid gray;
 }
 
-.center {
+.center{
     margin: auto;
     text-align: center;
 }
@@ -36,13 +36,15 @@ body {
     text-align: center;
 }
 
-a a:active a:hover a:link {
+a,
+a:active,
+a:hover,
+a:link {
     font-family: 'Open Sans', sans-serif;
     text-decoration: none;
-    color: gray;
 }
 
-h3 {
+h3, h4 {
     font-family: 'Quando', serif;
 }
 

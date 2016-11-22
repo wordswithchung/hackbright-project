@@ -1,34 +1,47 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 
 <div class="container-fluid map-page">
-<div class="row center">
+
+  <div class="row center">
+
     <br>
-    <h3>See all the places you can go.</h3>
-    <p>Select a starting airport below to view locations and average prices on a map.</p>
-</div>
-<div class="row">
-    <div class="col-xs-offset-3">
-  <form id="airport-search-form" method="GET" class="form-inline">
+    <h3>Oh, the places you can go.</h3>
+    <p>Select a starting airport below to see locations and average prices on a map.</p>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-xs-offset-4">
+
+    <form id="airport-search-form" method="GET" class="form-inline">
+
     <div class="col-xs-5">
-    <div class="typeahead__container">
-        <div class="typeahead__field">
-            <span class="typeahead__query">
-                <input class="js-typeahead"
-                       id="airport-search-field"
-                       type="search"
-                       autocomplete="off"
-                       placeholder="Select Starting Airport"
-                       ></span></div></div></div>
+      <div class="typeahead__container">
+      <div class="typeahead__field">
+          <span class="typeahead__query">
+            <input class="js-typeahead"
+                   id="airport-search-field"
+                   type="search"
+                   autocomplete="off"
+                   placeholder="Select Starting Airport">
+          </span>
+      </div>
+      </div>
+    </div>
 
     <div class="col-xs-1">
-    <input type="submit" id="airport-search" class="btn btn-default">
-</div>
-</div></div>
-<br>
-<div id="map"></div>
+      <input type="submit" id="airport-search" class="btn btn-default">
+    </div>
+
+    </form>
+    </div>
+  </div>
+
+  <br>
+  <div id="map"></div>
 
 </div>
 {% endblock %}
@@ -37,55 +50,11 @@
 
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUPJFt0VRwL6XWJFm9_WnjDgNBb_d_MQg&callback=initMap"></script>
 
+<script src="/static/map.js"></script>
+
 <script>
 
-var airfares = {{ airfares|tojson|safe }};
-var airport_latlngs = {{ airport_latlngs|tojson|safe }};
-
-function initMap() {
-    var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: originalMapCenter,
-        zoom: 3,
-        });
-};
-
-function newCenter() {
-    var mapCenter = new google.maps.LatLng(31.7917, 7.0926);
-    newMap = new google.maps.Map(document.getElementById('map'), {
-        center: mapCenter,
-        zoom: 2,
-        });
-};
-
-function loadDestinations(evt) {
-    evt.preventDefault();
-
-    // not declaring var before so airport is globally available
-    airport = $('#airport-search-field').val().slice(0, 3);
-    var m = airfares[airport];
-
-    // var image = '/static/airport.svg';
-    newCenter();
-
-    for (i = 0; i < m.length; i++) {
-
-        var name = m[i].city_name;
-        var avgPrice = m[i].avg_price;
-        var between = ": Average Price $";
-        var cheapMonth = m[i].cheapest_month;
-        var spot = new google.maps.LatLng(m[i].arrival_lat, m[i].arrival_lng);
-
-        var marker = new google.maps.Marker({
-            position: spot,
-            map: newMap,
-            title: name.concat(between,avgPrice),
-        });
-
-    };
-};
-
-$('#airport-search-form').on('submit', loadDestinations);
+  airfares = {{ airfares|tojson|safe }};
 
 </script>
 
