@@ -111,6 +111,29 @@ class Airfare(db.Model):
             return best_bet
 
 
+    @staticmethod
+    def create_map_airfare_objs():
+        """Create objects out of the airfares table in the database for JavaScript
+        to render from the /map route."""
+
+        airfares = {}
+        airport_latlngs = {}
+        for airfare in Airfare.query.all():
+            a = airfare.depart
+            if a in airfares:
+                airfares[a].append({
+                                 "arrival_city": airfare.arrive,
+                                 "city_name": airfare.aport.city,
+                                 "arrival_lat": airfare.aport.lat,
+                                 "arrival_lng": airfare.aport.lng,
+                                 "avg_price": airfare.average_price,
+                                 "cheapest_month": airfare.cheapest_month,})
+            else:
+                airfares[a] = []
+                airport_latlngs[a] = (airfare.dport.lat, airfare.dport.lng)
+
+        return airfares, airport_latlngs
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 

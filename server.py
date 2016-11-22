@@ -41,23 +41,10 @@ def search():
 
     duration, month, year = int(duration), int(month), int(year)
     start, end = helper.choose_dates(month, year, duration)
-
-    session["depart"] = request.form.get('depart')
-
     airfares = Airfare.choose_locations(month, depart)
     distances = db_func.calc_distance(airfares)
     kayak_urls = kayak.make_kayak_urls(airfares, start, end)
-    data = zip(airfares, distances, kayak_urls)
-
-    info = []
-    for airfare, distance, kayak_url in data:
-        info.append({
-            'arrival_city'  : airfare.aport.city,
-            'avg_price'     : int(airfare.average_price),
-            'airport_code'  : airfare.arrive,
-            'distance'      : distance,
-            'kayak_url'     : kayak_url
-        })
+    info = db_func.create_search_result_obj(airfares, distances, kayak_urls)
 
     return render_template('search.html', info=info,
                                           length=len(kayak_urls),
@@ -71,26 +58,10 @@ def search():
 def map():
     """Render a Google Map that displays the airfare database info."""
 
-    # this can probably go in db_func when I refactor the code
-    airfares = {}
-    airport_latlngs = {}
-    for airfare in Airfare.query.all():
-        a = airfare.depart
-        if a in airfares:
-            airfares[a].append({
-                             "arrival_city": airfare.arrive,
-                             "city_name": airfare.aport.city,
-                             "arrival_lat": airfare.aport.lat,
-                             "arrival_lng": airfare.aport.lng,
-                             "avg_price": airfare.average_price,
-                             "cheapest_month": airfare.cheapest_month,})
-        else:
-            airfares[a] = []
-            airport_latlngs[a] = (airfare.dport.lat, airfare.dport.lng)
+    airfares, airport_latlngs = Airfare.create_map_airfare_objs()
 
     return render_template('map.html', airfares=airfares,
                                        airport_latlngs=airport_latlngs,)
-
 
 
 if __name__ == "__main__":

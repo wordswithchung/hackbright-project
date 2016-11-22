@@ -21,8 +21,8 @@
     <input type="submit" id="airport-search" class="btn btn-default">
     </div>
 </div>
-
-    <div id="map"></div>
+<br>
+<div id="map"></div>
 
 </div>
 {% endblock %}
@@ -37,200 +37,19 @@ var airfares = {{ airfares|tojson|safe }};
 var airport_latlngs = {{ airport_latlngs|tojson|safe }};
 
 function initMap() {
-// styling from https://snazzymaps.com/style/25/blue-water
-styledMapType = new google.maps.StyledMapType(
-            [
-  {
-    "featureType": "administrative",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#444444"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.land_parcel",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "administrative.neighborhood",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape",
-    "stylers": [
-      {
-        "color": "#f2f2f2"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "stylers": [
-      {
-        "saturation": -100
-      },
-      {
-        "lightness": 45
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road.arterial",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road.arterial",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "stylers": [
-      {
-        "visibility": "simplified"
-      }
-    ]
-  },
-  {
-    "featureType": "road.highway",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road.local",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "stylers": [
-      {
-        "color": "#46bcec"
-      },
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  }
-],
-            {name: 'Styled Map'});
-
-var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
-
-map = new google.maps.Map(document.getElementById('map'), {
-          center: originalMapCenter,
-          zoom: 3,
-          mapTypeControlOptions: {
-            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-                    'styled_map']
-          }
+    var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: originalMapCenter,
+        zoom: 3,
         });
-
-        //Associate the styled map with the MapTypeId and set it to display.
-        map.mapTypes.set('styled_map', styledMapType);
-        map.setMapTypeId('styled_map');
-      };
+};
 
 function newCenter() {
-
     var mapCenter = new google.maps.LatLng(airport_latlngs[airport][0], airport_latlngs[airport][1]);
-    map = new google.maps.Map(document.getElementById('map'), {
-          center: mapCenter,
-          zoom: 3,
-          mapTypeControlOptions: {
-            mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-                    'styled_map']}
+    newMap = new google.maps.Map(document.getElementById('map'), {
+        center: mapCenter,
+        zoom: 4,
         });
-
-
-        map.mapTypes.set('styled_map', styledMapType);
-        map.setMapTypeId('styled_map');
 };
 
 function loadDestinations(evt) {
@@ -253,10 +72,8 @@ function loadDestinations(evt) {
 
         var marker = new google.maps.Marker({
             position: spot,
-            map: map,
+            map: newMap,
             title: name.concat(between,avgPrice),
-            // icon: image,
-            // map_icon_label: '<span class="map-icon map-icon-point-of-interest"></span>'
         });
 
     };

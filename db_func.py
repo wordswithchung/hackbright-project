@@ -28,3 +28,22 @@ def calc_distance(airfares):
         distances.append(int(d))
 
     return distances
+
+def create_search_result_obj(airfares, distances, kayak_urls):
+    """Creates objects out of the search results for JavaScript to render on
+    the /search route."""
+
+    data = zip(airfares, distances, kayak_urls)
+
+    info = []
+    for airfare, distance, kayak_url in data:
+        info.append({
+            'arrival_city'  : airfare.aport.city,
+            'avg_price'     : int(airfare.average_price),
+            'airport_code'  : airfare.arrive,
+            'distance'      : distance,
+            'kayak_url'     : kayak_url
+        })
+
+    return info
+
