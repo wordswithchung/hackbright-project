@@ -1,3 +1,5 @@
+// 'use strict';
+
 function loop(sortedResults) {
 
   for (i = 0; i < sortedResults.length; i++) {
@@ -6,7 +8,7 @@ function loop(sortedResults) {
     $('#box_airport_code'+i).html(sortedResults[i].airport_code);
     $('#box_distance'+i).html(sortedResults[i].distance);
     $('#box_kayak_url'+i).html('<a href=\"' + sortedResults[i].kayak_url
-                                            + '\">Buy on Kayak!</a>');
+                                            + '\" class="btn btn-default btn-sm kayak-button">Buy on Kayak</a>');
   };
 };
 

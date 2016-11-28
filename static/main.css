@@ -57,3 +57,9 @@ h1 {
     text-align: center;
     line-height: 100%;
 }
+
+.kayak-button,
+.kayak-button:hover {
+    background-color: #FFB03B;
+    color: #fff;
+}

@@ -1,3 +1,5 @@
+// 'use strict';
+
 function initMap() {
   var originalMapCenter = new google.maps.LatLng(14.0583, 108.2772);
   map = new google.maps.Map(document.getElementById('map'), {
