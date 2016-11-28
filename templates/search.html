@@ -25,14 +25,14 @@
 
   <div class="row" id="display-search-results">
 
-    {% for i in range(1, length) %}
+    {% for i in range(length) %}
 
     <div class="search-result-box col-xs-12 col-s-4 col-md-3 col-l-3 card card-block">
-      <h1 class="card-title"><span id="box_arrival_city{{ i }}"></span></h1>
-      <p class="card-text">Average price: $<span id="box_average_price{{ i }}"></span></p>
-      <p class="card-text">Airport code: <span id="box_airport_code{{ i }}"></span></p>
-      <p class="card-text">Distance: <span id="box_distance{{ i }}"></span></p>
-      <p class="card-text"><span id="box_kayak_url{{ i }}"></span></p>
+      <h1 class="card-title"><span id="box-arrival-city{{ i }}"></span></h1>
+      <p class="card-text">Average price: $<span id="box-average-price{{ i }}"></span></p>
+      <p class="card-text">Airport code: <span id="box-airport-code{{ i }}"></span></p>
+      <p class="card-text">Distance: <span id="box-distance{{ i }}"></span></p>
+      <p class="card-text"><span id="box-kayak-url{{ i }}"></span></p>
     </div>
 
     {% endfor %}

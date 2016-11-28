@@ -3,11 +3,11 @@
 function loop(sortedResults) {
 
   for (i = 0; i < sortedResults.length; i++) {
-    $('#box_arrival_city'+i).html(sortedResults[i].arrival_city);
-    $('#box_average_price'+i).html(sortedResults[i].avg_price);
-    $('#box_airport_code'+i).html(sortedResults[i].airport_code);
-    $('#box_distance'+i).html(sortedResults[i].distance);
-    $('#box_kayak_url'+i).html('<a href=\"' + sortedResults[i].kayak_url
+    $('#box-arrival-city'+i).html(sortedResults[i].arrival_city);
+    $('#box-average-price'+i).html(sortedResults[i].avg_price);
+    $('#box-airport-code'+i).html(sortedResults[i].airport_code);
+    $('#box-distance'+i).html(sortedResults[i].distance);
+    $('#box-kayak-url'+i).html('<a href=\"' + sortedResults[i].kayak_url
                                             + '\" class="btn btn-default btn-sm kayak-button">Buy on Kayak</a>');
   };
 };

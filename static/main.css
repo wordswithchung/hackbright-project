@@ -13,6 +13,7 @@
 html,
 body {
     height: 100%;
+    background-image: url("squairy_light.png");
 }
 
 .homepage {
@@ -59,7 +60,9 @@ h1 {
 }
 
 .kayak-button,
-.kayak-button:hover {
+.kayak-button:hover,
+.kayak-button:active,
+.kayak-button:link {
     background-color: #FFB03B;
     color: #fff;
 }

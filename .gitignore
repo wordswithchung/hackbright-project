@@ -1,3 +1,4 @@
 env/
 *.pyc
 ignore/
+.DS_Store
