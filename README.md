@@ -43,4 +43,4 @@ Database entries are viewable via Google Maps API:
 <kbd>![Google Maps](/static/da_maps.gif)</kbd>
 
 ## <a name="author"></a>Author
-[Chung Nguyen](https://www.linkedin.com/in/chungtnguyen) is a software engineer trained by Hackbright Academy, an engineering bootcamp for women in San Francisco  (graduation: December 2016). She's from the Bay Area and has a lot of experience in client-facing roles and training UX researchers, software developers, and product managers in remote usability testing. She is currently seeking a full-time software developer role in the peninsula (Mountain View, Palo Alto, Menlo Park, Redwood City, San Mateo).
+[Chung Nguyen](https://www.linkedin.com/in/chungtnguyen) is a software engineer fellow at Hackbright Academy, an engineering bootcamp for women in San Francisco  (graduation: December 2016). She's from the Bay Area and has a lot of experience in client-facing roles and training UX researchers, software developers, and product managers in remote usability testing. She is currently seeking a full-time software developer role in the San Francisco Bay Area.
