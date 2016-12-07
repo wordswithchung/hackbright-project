@@ -65,12 +65,14 @@ def map():
 
 if __name__ == "__main__":
     # Debug to true while building and testing app
-    app.debug = True
-    app.jinja_env.auto_reload = app.debug
+    # app.debug = True
+    # app.jinja_env.auto_reload = app.debug
 
-    connect_to_db(app)
+    connect_to_db(app, os.environ.get("DATABASE_URL")) # for Heroku deployment
 
     # Use the DebugToolbar
     # flask_debugtoolbar.DebugToolbarExtension(app)
 
-    app.run(host='0.0.0.0', port=5000)
+    DEBUG = "NO_DEBUG" not in os.environ # for Heroku deployment
+    PORT = int(os.environ.get("PORT", 5000)) # for Heroku deployment
+    app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
