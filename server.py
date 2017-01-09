@@ -2,7 +2,7 @@
 
 import calendar
 from datetime import date, datetime, timedelta
-import os
+import osg
 
 from flask import Flask, jsonify, render_template, request, session
 import flask_debugtoolbar
